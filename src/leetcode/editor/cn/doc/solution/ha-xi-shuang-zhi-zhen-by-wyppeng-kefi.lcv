@@ -1,0 +1,27 @@
+### 解题思路
+
+### 代码
+
+* cpp
+
+```cpp
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int hash[256]={0};
+        int len=0;
+        int i=0,j=0;
+        while(j<s.size()){
+            ++hash[s[j]];
+            while(hash[s[j]]>1){
+                --hash[s[i]];
+                ++i;
+            }
+            len=max(j-i+1,len);
+            ++j;
+        }
+        return len;
+    }
+};
+```
+
