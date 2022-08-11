@@ -54,7 +54,7 @@ object Solution {
         var k = 0
         val buffer = new ListBuffer[List[Int]]
         // 固定一个指针，遍历负数到0的部分
-        while (k < orderedData.length && orderedData(k) <= 0) {
+        while (k < orderedData.length - 2 && orderedData(k) <= 0) {
             // 跳过重复值
             if ((k >= 1 && orderedData(k) != orderedData(k-1)) || k == 0) {
                 // 构建两个指针，一个从k到右，一个从右到左。注意，i必须从k右侧开始取值，否则会重复

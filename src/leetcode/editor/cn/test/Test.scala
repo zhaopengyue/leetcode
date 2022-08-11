@@ -1,6 +1,6 @@
 package leetcode.editor.cn.test
 
-import leetcode.editor.cn.t_016_最接近的三数之和.Solution
+import leetcode.editor.cn.t_018_四数之和.Solution
 
 
 /**
@@ -10,6 +10,6 @@ import leetcode.editor.cn.t_016_最接近的三数之和.Solution
 
 object Test {
   def main(args: Array[String]): Unit = {
-    println(Solution.threeSumClosest(Array(1,1,1,1), 0))
+    println(Solution.fourSum(Array(1000000000,1000000000,1000000000,1000000000), -294967296))
   }
 }
