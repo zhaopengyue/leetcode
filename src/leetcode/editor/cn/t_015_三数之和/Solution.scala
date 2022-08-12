@@ -39,7 +39,11 @@ package leetcode.editor.cn.t_015_三数之和
 //
 // Related Topics 数组 双指针 排序 👍 5051 👎 0
 
-
+/*
+* 解答成功:
+	执行耗时:704 ms,击败了100.00% 的Scala用户
+	内存消耗:60 MB,击败了80.00% 的Scala用户
+* */
 //leetcode submit region begin(Prohibit modification and deletion)
 import scala.collection.mutable.ListBuffer
 
