@@ -59,55 +59,96 @@ package leetcode.editor.cn.t_146__l_r_u_缓存
 //
 // Related Topics 设计 哈希表 链表 双向链表 👍 2344 👎 0
 
-
+/*
+* 解答成功:
+	执行耗时:1612 ms,击败了57.14% 的Scala用户
+	内存消耗:165.8 MB,击败了85.71% 的Scala用户
+* */
 //leetcode submit region begin(Prohibit modification and deletion)
+
+import scala.collection.mutable
+
 class LRUCache(_capacity: Int) {
 
-    case class Node(k: Int = 0, var v: Int = 0, var prev: Node = null, var next: Node = null)
+  case class Node(k: Int = 0, var v: Int = 0, var prev: Node = null, var next: Node = null)
 
-    /* 维护双向队列 */
-    class LRULinkList() {
-        // 虚拟头结点
-        val vHead: Node = new Node()
-        // 尾结点
-        var tail: Node = vHead
-
-        /* 插入元素：尾插法 */
-        def add(node: Node): Unit = {
-            tail.next = node
-            node.prev = tail
-            tail = node
-        }
-
-        /* 移除头部元素 */
-        def removeFirst(): Unit = {
-           if (vHead.next == null) return
-           if (tail == vHead.next) {
-               tail = vHead
-               return
-           }
-           vHead.next = vHead.next.next
-           // 重置prev
-           if (vHead.next != null) {
-               vHead.next.prev = vHead
-           }
-        }
-
-        /**/
-        def remove(node: Node): Unit = {
-
-        }
-    }
-
+  /* 维护双向队列 */
+  class LRULinkList() {
     var size = 0
+    // 虚拟头结点
+    val vHead: Node = Node()
+    // 尾结点
+    var tail: Node = vHead
 
-    def get(key: Int): Int = {
-
+    /* 插入元素：尾插法 */
+    def add(node: Node): Unit = {
+      tail.next = node
+      node.prev = tail
+      node.next = null
+      tail = node
+      size += 1
     }
 
-    def put(key: Int, value: Int) {
-
+    /* 移除头部元素 */
+    def removeFirst(): Node = {
+      if (vHead.next == null) return null
+      val first = vHead.next
+      size -= 1
+      if (tail == vHead.next) {
+        tail = vHead
+        vHead.next = null
+        return first
+      }
+      vHead.next = vHead.next.next
+      // 重置新头结点的prev
+      if (vHead.next != null) {
+        vHead.next.prev = vHead
+      }
+      first
     }
+
+    /**/
+    def remove(node: Node): Unit = {
+      node.prev.next = node.next
+      if (node.next != null) {
+        node.next.prev = node.prev
+      }
+      if (node == tail) {
+        tail = tail.prev
+      }
+      size -= 1
+    }
+  }
+
+  var pool = new mutable.HashMap[Int, Node]()
+  var lruList = new LRULinkList
+
+  def get(key: Int): Int = {
+    if (!pool.contains(key)) return -1
+    // 池中包含
+    val node = pool(key)
+    // 移除
+    lruList.remove(node)
+    // 重新添加
+    lruList.add(node)
+    node.v
+  }
+
+  def put(key: Int, value: Int) {
+    if (pool.contains(key)) {
+      val node = pool(key)
+      lruList.remove(node)
+    } else {
+      // 容量满了,移出队首元素
+      if (lruList.size == _capacity) {
+        val first = lruList.removeFirst()
+        pool.remove(first.k)
+      }
+    }
+    val node = Node(key, value)
+    pool += (key -> node)
+    lruList.add(node)
+  }
 
 }
 

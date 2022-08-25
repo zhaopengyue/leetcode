@@ -56,6 +56,9 @@ class ListNode(_x: Int = 0, _next: ListNode = null) {
  * }
  */
 object Solution {
+
+    def twoSum(l1: ListNode, l2: ListNode): ListNode = addTwoNumbers(l1, l2)
+
     def addTwoNumbers(l1: ListNode, l2: ListNode): ListNode = {
         var addNum = 0
         // 头指针

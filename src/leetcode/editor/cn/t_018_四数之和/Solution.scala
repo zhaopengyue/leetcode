@@ -39,7 +39,11 @@ package leetcode.editor.cn.t_018_四数之和
 //
 // Related Topics 数组 双指针 排序 👍 1327 👎 0
 
-
+/*
+* 解答成功:
+	执行耗时:568 ms,击败了100.00% 的Scala用户
+	内存消耗:54.2 MB,击败了71.43% 的Scala用户
+* */
 //leetcode submit region begin(Prohibit modification and deletion)
 import scala.collection.mutable.ListBuffer
 object Solution {

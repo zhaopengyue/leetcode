@@ -40,11 +40,27 @@ package leetcode.editor.cn.t_003_无重复字符的最长子串
 //
 // Related Topics 哈希表 字符串 滑动窗口 👍 7893 👎 0
 
+/*
+* 优化方案后map解法
+* 解答成功:
+	执行耗时:528 ms,击败了65.00% 的Scala用户
+	内存消耗:52.9 MB,击败了85.00% 的Scala用户
+	*
+* 优化方案后数组解法
+* 解答成功:
+	执行耗时:508 ms,击败了86.67% 的Scala用户
+	内存消耗:52.5 MB,击败了95.00% 的Scala用户
+* */
 //leetcode submit region begin(Prohibit modification and deletion)
 import scala.collection.mutable
 import scala.util.control._
 
 object Solution {
+    /*
+    解答成功:
+      执行耗时:600 ms,击败了21.67% 的Scala用户
+      内存消耗:53.1 MB,击败了68.33% 的Scala用户
+    该方案可以进一步简化，即没有必要删除map中重复字符前的下标，同时可以用数组替换hash表
     def lengthOfLongestSubstring(s: String): Int = {
         if (s.isEmpty) {
             return 0
@@ -86,6 +102,47 @@ object Solution {
                 maxLen = Math.max(maxLen, j - i + 1)
             }
             charMap.put(currChar, j)
+            j += 1
+        }
+        maxLen
+    }*/
+
+    // 优化版
+    def lengthOfLongestSubstring(s: String): Int = {
+        if (s.isEmpty) {
+            return 0
+        }
+        if (s.length == 1) {
+            return 1
+        }
+        // 使用数组替换，并初始化值为-1
+        //val charMap = new mutable.HashMap[Char, Int]()
+        val charMap = Array.fill(128)(-1)
+        // 将第一位存储map，作为初始序列
+        charMap(s.charAt(0)) = 0
+        //charMap.put(s.charAt(0), 0)
+        // 当前记录的非重复子串的开始下标
+        var i = 0
+        // 正在遍历的字符的下标
+        var j = 1
+        var maxLen = 1
+
+        while (j <= s.length - 1) {
+            val currChar = s.charAt(j)
+            // 获取重复字符对应的下标, 不存在为-1
+            //val repeatCharIndex = charMap.getOrElse(currChar, -1)
+            val repeatCharIndex = charMap(currChar)
+            // 若当前字符存在，且下标位于i~j-1中，则说明重复了，可以计算下目前的子串的最大长度
+            if (repeatCharIndex >= i) {
+                maxLen = Math.max(maxLen, j - i)
+                // 将新的非重复子串的开始索引赋值为重复字符下标+1
+                i = repeatCharIndex + 1
+            } else {
+                maxLen = Math.max(maxLen, j - i + 1)
+            }
+            // 将当前字符放入
+            //charMap.put(currChar, j)
+            charMap(currChar) = j
             j += 1
         }
         maxLen

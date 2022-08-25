@@ -39,13 +39,62 @@ package leetcode.editor.cn.t_004_寻找两个正序数组的中位数
 //
 // Related Topics 数组 二分查找 分治 👍 5667 👎 0
 
-
 //leetcode submit region begin(Prohibit modification and deletion)
+import java.util
 import java.util.{Comparator, PriorityQueue}
 
 object Solution {
 
     def findMedianSortedArrays(nums1: Array[Int], nums2: Array[Int]): Double = {
+        findMedianSortedArraysByGuiBing(nums1, nums2)
+    }
+
+    /*
+    * 解答成功:
+      执行耗时:692 ms,击败了55.00% 的Scala用户
+      内存消耗:55.9 MB,击败了60.00% 的Scala用户
+      * 备注：还有一个思路：就是光移动指针，不创建新数组
+    * */
+    def findMedianSortedArraysByGuiBing(nums1: Array[Int], nums2: Array[Int]): Double = {
+        if (nums1.isEmpty && nums2.isEmpty) {
+            return 0.0
+        }
+        val data = new Array[Int](nums1.length + nums2.length)
+        var i = 0
+        var j = 0
+        while (i < nums1.length && j < nums2.length) {
+            if (nums1(i) < nums2(j)) {
+                data(i+j) = nums1(i)
+                i += 1
+            } else {
+                data(i+j) = nums2(j)
+                j += 1
+            }
+        }
+        while (i < nums1.length) {
+            data(i+j) = nums1(i)
+            i += 1
+        }
+        while (j < nums2.length) {
+            data(i+j) = nums2(j)
+            j += 1
+        }
+        val allSize = nums1.length + nums2.length
+        val middle = allSize / 2
+        if (allSize % 2 == 0) {
+            (data(middle - 1).toDouble + data(middle)) / 2
+        } else {
+            data(middle)
+        }
+
+    }
+
+    /*
+    * 解答成功:
+      执行耗时:916 ms,击败了5.00% 的Scala用户
+      内存消耗:56.5 MB,击败了20.00% 的Scala用户
+    * */
+    def findMedianSortedArraysByHeap(nums1: Array[Int], nums2: Array[Int]): Double = {
         // 基于两个堆查找中位数
         val smallHeap = new PriorityQueue[Int]()
         val bigHeap = new PriorityQueue[Int](new Comparator[Int] {

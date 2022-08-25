@@ -47,8 +47,8 @@ class ListNode(_x: Int = 0, _next: ListNode = null) {
 }
 /*
 * 解答成功:
-	执行耗时:556 ms,击败了25.00% 的Scala用户
-	内存消耗:55.3 MB,击败了25.00% 的Scala用户
+	执行耗时:508 ms,击败了100.00% 的Scala用户
+	内存消耗:55.5 MB,击败了33.33% 的Scala用户
 * */
 //leetcode submit region begin(Prohibit modification and deletion)
 /**
@@ -60,10 +60,39 @@ class ListNode(_x: Int = 0, _next: ListNode = null) {
  */
 object Solution {
     def reverseKGroup(head: ListNode, k: Int): ListNode = {
-        if (k == 1) return head
-        reverse(head, k)
+        // 递归终止条件：长度不足k
+        var q = head
+        for (_ <- 0 until k) {
+            if (q == null) return head
+            q = q.next
+        }
+        // 循环结束后q为分组下一个元素
+        val newHead = reverseList(head, q)
+        // 计算下一组：下一组和从q开始
+        head.next = reverseKGroup(q, k)
+        // 返回新头元素
+        newHead
     }
 
+    // 重置[head,end)之间的元素
+    private def reverseList(head: ListNode, end: ListNode): ListNode = {
+        var prev: ListNode = null
+        var p = head
+        while (p != end) {
+            val next = p.next
+            p.next = prev
+            prev = p
+            p = next
+        }
+        prev
+    }
+
+    /*
+    /*
+    * 解答成功:
+      执行耗时:556 ms,击败了25.00% 的Scala用户
+      内存消耗:55.3 MB,击败了25.00% 的Scala用户
+    * */
     def reverse(head: ListNode, k: Int): ListNode = {
         var i = 0
         var curr = head
@@ -93,5 +122,6 @@ object Solution {
         // prev指向原来最后一个节点，此时作为该段的头结点返回
         prev
     }
+    */
 }
 //leetcode submit region end(Prohibit modification and deletion)
