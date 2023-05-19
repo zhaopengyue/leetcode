@@ -56,6 +56,7 @@ class ListNode(_x: Int = 0, _next: ListNode = null) {
  * }
  */
 object Solution {
+    /* 方法1:
     def addTwoNumbers(l1: ListNode, l2: ListNode): ListNode = {
         var addNum = 0
         // 头指针
@@ -125,6 +126,36 @@ object Solution {
             val currNode = new ListNode(1, null)
             currNodeP.next = currNode
         }
+        rsHead.next
+    }
+     */
+
+    /* 方法2：方法1的代码优化版本
+    	  执行耗时:608 ms,击败了43.48% 的Scala用户
+	      内存消耗:56.2 MB,击败了60.87% 的Scala用户
+    */
+    def addTwoNumbers(l1: ListNode, l2: ListNode): ListNode = {
+        val rsHead = new ListNode()
+        var currNode = rsHead
+        // 进位
+        var carryNum = 0
+        var p = l1
+        var q = l2
+
+        while (p != null || q!= null) {
+            val x = if (p != null) p.x else 0
+            val y = if (q != null) q.x else 0
+            val sum = x + y + carryNum
+            val rsNode = new ListNode(sum % 10)
+            currNode.next = rsNode
+            currNode = rsNode
+            carryNum = sum / 10
+            if (p != null) p = p.next
+            if (q != null) q = q.next
+        }
+
+        if (carryNum == 1) currNode.next = new ListNode(1)
+
         rsHead.next
     }
 }

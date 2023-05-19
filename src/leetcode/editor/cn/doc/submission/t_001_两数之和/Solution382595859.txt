@@ -1,0 +1,40 @@
+object Solution {
+    def twoSum(nums: Array[Int], target: Int): Array[Int] = {
+        val arr = Array.fill(10)(-1)
+        for ((num, index) <- nums.zipWithIndex) {
+            val tmp = target - num
+            if (tmp >= 0 && arr(tmp) != -1) {
+                return Array(arr(tmp), index)
+            } else {
+                arr(num) = index
+            }
+        }
+        Array.empty[Int]
+    }
+}
+
+//runtime_error:java.lang.ArrayIndexOutOfBoundsException: -3
+Line 9: Solution$.$anonfun$twoSum$3 (solution.scala)
+Line 4: Solution$.$anonfun$twoSum$3$adapted (solution.scala)
+Line 73: scala.collection.ArrayOps$WithFilter.foreach (ArrayOps.scala)
+Line 4: Solution$.twoSum (solution.scala)
+Line 19: Main$.__helper__ (solution.scala)
+Line 35: Main$.main (solution.scala)
+Main.main (prog_joined.scala)
+sun.reflect.NativeMethodAccessorImpl.invoke0 (Native Method)
+Line 62: sun.reflect.NativeMethodAccessorImpl.invoke (NativeMethodAccessorImpl.java)
+Line 43: sun.reflect.DelegatingMethodAccessorImpl.invoke (DelegatingMethodAccessorImpl.java)
+Line 498: java.lang.reflect.Method.invoke (Method.java)
+Line 101: scala.reflect.internal.util.RichClassLoader$.$anonfun$run$extension$1 (ScalaClassLoader.scala)
+Line 36: scala.reflect.internal.util.RichClassLoader$.run$extension (ScalaClassLoader.scala)
+Line 30: scala.tools.nsc.CommonRunner.run (ObjectRunner.scala)
+Line 28: scala.tools.nsc.CommonRunner.run$ (ObjectRunner.scala)
+Line 45: scala.tools.nsc.ObjectRunner$.run (ObjectRunner.scala)
+Line 37: scala.tools.nsc.CommonRunner.runAndCatch (ObjectRunner.scala)
+Line 36: scala.tools.nsc.CommonRunner.runAndCatch$ (ObjectRunner.scala)
+Line 70: scala.tools.nsc.MainGenericRunner.runTarget$1 (MainGenericRunner.scala)
+Line 91: scala.tools.nsc.MainGenericRunner.run$1 (MainGenericRunner.scala)
+Line 103: scala.tools.nsc.MainGenericRunner.process (MainGenericRunner.scala)
+Line 108: scala.tools.nsc.MainGenericRunner$.main (MainGenericRunner.scala)
+scala.tools.nsc.MainGenericRunner.main (MainGenericRunner.scala)
+//last_testcase:[-3,4,3,90] 0

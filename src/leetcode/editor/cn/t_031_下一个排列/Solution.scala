@@ -54,8 +54,8 @@ package leetcode.editor.cn.t_031_下一个排列
 
 /*
 * 解答成功:
-	执行耗时:492 ms,击败了66.67% 的Scala用户
-	内存消耗:53.1 MB,击败了33.33% 的Scala用户
+	执行耗时:512 ms,击败了71.43% 的Scala用户
+	内存消耗:53.5 MB,击败了14.29% 的Scala用户
 * */
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
@@ -100,7 +100,7 @@ object Solution {
     def reverse(nums: Array[Int], i: Int, j: Int): Unit = {
         var ti = i
         var tj = j
-        while (ti < tj && ti < nums.length && tj >= 0) {
+        while (ti < tj && ti <= j && tj >= i) {
             swap(nums, ti, tj)
             ti += 1
             tj -= 1

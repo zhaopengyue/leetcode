@@ -1,0 +1,36 @@
+import scala.collection.mutable
+
+object Solution {
+    def twoSum(nums: Array[Int], target: Int): Array[Int] = {
+        // 解法1: 遍历两次，时间复杂度较高
+        // key为num, v为下标
+        val numMap = new mutable.HashMap[Int, Int]
+        for (i <- nums.indices) {
+            numMap += (nums(i) -> i)
+        }
+        for (i <- nums.indices) {
+            val b = target - nums(i)
+            val bIndex = numMap.getOrElse(b, -1)
+            if (bIndex != -1 && bIndex != i) {
+                return Array(i, bIndex)
+            }
+        }
+        Array.empty[Int] 
+        /*
+        // 若减完后发现值没有在之前出现过，则遍历下一个元素，将当前元素存入map
+        val numMap = new mutable.HashMap[Int, Int]
+        for (i <- nums.indices) {
+            val a = nums(i)
+            val b = target - a
+            if (numMap.contains(b)) {
+                return Array(i, numMap(b))
+            } else {
+                numMap += (a -> i)
+            }
+        }
+        Array.empty[Int]*/
+    }
+}
+
+//runtime:548 ms
+//memory:53.6 MB

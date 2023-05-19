@@ -32,11 +32,39 @@ package leetcode.editor.cn.t_042_接雨水
 //
 // Related Topics 栈 数组 双指针 动态规划 单调栈 👍 3736 👎 0
 
-
+/*
+* 方法思路如下（暴力和双指针方法思想一致）：
+* 1. 求雨量总和可以理解为求每个柱子的容水量，然后进行加和
+* 2. 每个柱子的容水量 = Math.min(该柱子左边的最高值, 该柱子右边的最高值) - 当前柱子高度
+* 3. 以左侧为例，若当前柱子高度小于右侧柱子，但其高度又高于左侧最高，那么该柱子是不存水的；右侧同理
+* */
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
     def trap(height: Array[Int]): Int = {
-
+        // 双指针
+        var sum = 0
+        var i = 0
+        var j = height.length - 1
+        var leftMaxHeight = 0
+        var rightMaxHeight = 0
+        while (i < j) {
+            if (height(i) < height(j)) {
+                if (height(i) > leftMaxHeight) {
+                    leftMaxHeight = height(i)
+                } else {
+                    sum = leftMaxHeight - height(i) + sum
+                }
+                i += 1
+            } else {
+                if (height(j) > rightMaxHeight) {
+                    rightMaxHeight = height(j)
+                } else {
+                    sum = rightMaxHeight - height(j) + sum
+                }
+                j -= 1
+            }
+        }
+        sum
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
