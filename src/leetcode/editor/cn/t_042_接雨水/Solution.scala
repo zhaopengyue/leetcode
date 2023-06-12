@@ -37,6 +37,10 @@ package leetcode.editor.cn.t_042_接雨水
 * 1. 求雨量总和可以理解为求每个柱子的容水量，然后进行加和
 * 2. 每个柱子的容水量 = Math.min(该柱子左边的最高值, 该柱子右边的最高值) - 当前柱子高度
 * 3. 以左侧为例，若当前柱子高度小于右侧柱子，但其高度又高于左侧最高，那么该柱子是不存水的；右侧同理
+*
+* 解答成功:
+	执行耗时:548 ms,击败了75.00% 的Scala用户
+	内存消耗:57.2 MB,击败了31.25% 的Scala用户
 * */
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {

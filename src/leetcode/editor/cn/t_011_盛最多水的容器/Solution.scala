@@ -37,7 +37,11 @@ package leetcode.editor.cn.t_011_盛最多水的容器
 //
 // Related Topics 贪心 数组 双指针 👍 3711 👎 0
 
-
+/**
+解答成功:
+	执行耗时:732 ms,击败了80.00% 的Scala用户
+	内存消耗:75.6 MB,击败了10.00% 的Scala用户
+ */
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
   def maxArea(height: Array[Int]): Int = {
