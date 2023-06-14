@@ -49,7 +49,7 @@ import scala.collection.mutable
  */
 object Solution {
     def generateTrees(n: Int): List[TreeNode] = {
-
+        null
     }
 
     def f(rootNum: Int, noUseSet: mutable.HashSet[Int], head: TreeNode, rs: mutable.ListBuffer[TreeNode]): Unit = {

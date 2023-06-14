@@ -39,36 +39,48 @@ package leetcode.editor.cn.t_042_接雨水
 * 3. 以左侧为例，若当前柱子高度小于右侧柱子，但其高度又高于左侧最高，那么该柱子是不存水的；右侧同理
 *
 * 解答成功:
-	执行耗时:548 ms,击败了75.00% 的Scala用户
-	内存消耗:57.2 MB,击败了31.25% 的Scala用户
+	执行耗时:536 ms,击败了87.50% 的Scala用户
+	内存消耗:56.6 MB,击败了37.50% 的Scala用户
 * */
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
-    def trap(height: Array[Int]): Int = {
-        // 双指针
-        var sum = 0
-        var i = 0
-        var j = height.length - 1
-        var leftMaxHeight = 0
-        var rightMaxHeight = 0
-        while (i < j) {
-            if (height(i) < height(j)) {
-                if (height(i) > leftMaxHeight) {
-                    leftMaxHeight = height(i)
-                } else {
-                    sum = leftMaxHeight - height(i) + sum
-                }
-                i += 1
+  def trap(height: Array[Int]): Int = {
+    // 双指针
+    var sum = 0
+    var i = 1
+    var j = height.length - 2
+    var leftMaxHeight = height(0)
+    var rightMaxHeight = height(height.length - 1)
+    /*
+    while (i < j) {
+        if (height(i) < height(j)) {
+            if (height(i) > leftMaxHeight) {
+                leftMaxHeight = height(i)
             } else {
-                if (height(j) > rightMaxHeight) {
-                    rightMaxHeight = height(j)
-                } else {
-                    sum = rightMaxHeight - height(j) + sum
-                }
-                j -= 1
+                sum = leftMaxHeight - height(i) + sum
             }
+            i += 1
+        } else {
+            if (height(j) > rightMaxHeight) {
+                rightMaxHeight = height(j)
+            } else {
+                sum = rightMaxHeight - height(j) + sum
+            }
+            j -= 1
         }
-        sum
+    }*/
+    while (i <= j) {
+      if (leftMaxHeight < rightMaxHeight) {
+        leftMaxHeight = Math.max(height(i), leftMaxHeight)
+        sum += leftMaxHeight - height(i)
+        i += 1
+      } else {
+        rightMaxHeight = Math.max(height(j), rightMaxHeight)
+        sum += rightMaxHeight - height(j)
+        j -= 1
+      }
     }
+    sum
+  }
 }
 //leetcode submit region end(Prohibit modification and deletion)
