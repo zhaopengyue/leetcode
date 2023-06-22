@@ -53,14 +53,8 @@ object Solution {
             val iLeft = i(0)
             val iRight = i(1)
             if (iLeft <= right) {
-                // 下述操作尽量扩大区间
-                if (iLeft < left) {
-                    left = iLeft
-                }
-                // 检查右侧是否大于当前right
-                if (iRight > right) {
-                    right = iRight
-                }
+                // 扩大右区间
+                right = Math.max(iRight, right)
             } else {
                 // 将当前区间放入结果集
                 rs += Array(left, right)

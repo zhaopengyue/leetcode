@@ -1,0 +1,65 @@
+> Problem: [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/description/)
+
+[TOC]
+
+# 思路
+
+> 要求在字符串s中寻找字符串t所含字符的连续最小连续子串，看见连续，我们就可以考虑使用滑动窗口法，同时使用Map数据类型来进行数据存储。
+> 考虑到字符串t中存在重复字符的问题，我们将所需数量存储在Map对象中。
+> 这里有个巧妙之处就是利用Map对象的大小来进行控制左指针的移动，得到我们想要的字符串。
+
+# 解题步骤
+
+1. 定义所需的Map对象、最短子串、当前窗口内字串以及窗口左右指针
+2. 遍历目标子串，将所需字符以及数量存储在Map对象中
+3. 得到Map对象的大小size
+4. 移动右指针，新增一个字符，就将Map中存储的所需字符减一，当为0时，所需字符种类数量size减一
+5. 当size数量减为0时，移动右指针，存储当前子串，如果右指针所指字符为所需字符，移出的同时，将Map对象中存储的对应字符数量加一，若移出后，窗口内字符不满足条件时，判断此时子串是否是最短的，短则更新，否则，继续移动右指针，进入步骤（3）
+
+# 复杂度
+
+- 时间复杂度:
+
+> $O(m+n)$
+
+# Code
+
+* []
+
+```JavaScript
+
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {string}
+ */
+var minWindow = function (s, t) {
+     const target = new Map();
+     let minChar;
+     let nowChar = "";
+     for (let i = 0; i < t.length; i++) {
+         target.set(t[i], (target.get(t[i]) || 0) + 1);
+     };
+     let size = target.size
+     let l = 0, r = 0;
+     for (; r < s.length; r++) {
+         if (target.has(s[r])) target.set(s[r], target.get(s[r]) - 1);
+         if (target.get(s[r]) === 0) size--
+
+         while (!size) {
+             nowChar = s.substring(l, r + 1);
+             if (target.has(s[l])) {
+                 target.set(s[l], target.get(s[l]) + 1)
+                 if (target.get(s[l]) === 1) {
+                     size++
+                     if (!minChar || minChar.length > nowChar.length) minChar = nowChar;
+                 }
+             }
+             l++;
+         }
+     }
+     return minChar ? minChar : '';
+};
+
+```
+

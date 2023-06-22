@@ -42,26 +42,28 @@ package leetcode.editor.cn.t_053_最大子数组和
 //
 // Related Topics 数组 分治 动态规划 👍 5231 👎 0
 
-
+/*
+解答成功:
+	执行耗时:780 ms,击败了81.82% 的Scala用户
+	内存消耗:74.7 MB,击败了36.36% 的Scala用户
+* */
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
 
-    def maxSubArray(nums: Array[Int]): Int = {
-        maxSubArrayByDp(nums)
+  def maxSubArray(nums: Array[Int]): Int = {
+    // dp表示以i为结尾的连续子串的最大和
+    var preDP = nums.head
+    var max = preDP
+    // 初始化
+    // 转移方程
+    // dp[i] = dp[i-1] + nums[i] where nums[i-1] > 0
+    // dp[i] = nums[i]           where nums[i-1] <= 0
+    for (i <- 1 until nums.length) {
+      val dp = Math.max(preDP + nums(i), nums(i))
+      max = Math.max(max, dp)
+      preDP = dp
     }
-
-    def maxSubArrayByDp(nums: Array[Int]): Int = {
-        // dp表示以i为结尾的连续子串的最大和
-        val dp = new Array[Int](nums.length)
-        // 初始化
-        dp(0) = nums(0)
-        // 转移方程
-        // dp[i] = dp[i-1] + nums[i] where nums[i-1] > 0
-        // dp[i] = nums[i]           where nums[i-1] <= 0
-        for (i <- 1 until nums.length) {
-           dp(i) = Math.max(dp(i-1) + nums(i), nums(i))
-        }
-        dp.max
-    }
+    max
+  }
 }
 //leetcode submit region end(Prohibit modification and deletion)
