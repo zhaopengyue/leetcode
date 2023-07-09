@@ -30,66 +30,56 @@ package leetcode.editor.cn.t_054_螺旋矩阵
 //
 // Related Topics 数组 矩阵 模拟 👍 1416 👎 0
 
-
+/*
+* 解答成功:
+  执行耗时:464 ms,击败了80.00% 的Scala用户
+  内存消耗:53.9 MB,击败了100.00% 的Scala用户
+* */
 //leetcode submit region begin(Prohibit modification and deletion)
-import leetcode.editor.cn.utils.Utils
 
 import scala.collection.mutable.ListBuffer
+
 object Solution {
   def spiralOrder(matrix: Array[Array[Int]]): List[Int] = {
     val rs = new ListBuffer[Int]()
 
-    var i, j = 0
-    var top = -1
-    var floor = matrix.length
-    var left = -1
-    var right = matrix.head.length
+    var top = 0
+    var floor = matrix.length - 1
+    var left = 0
+    var right = matrix.head.length - 1
+    var numFlag = matrix.length * matrix.head.length
 
-    while (i > top && i < floor && j > left && j < right) {
+    while (numFlag >= 1) {
       // left -> right
-      while (j < right) {
-        rs += matrix(i)(j)
-        j += 1
+      for (i <- left to right if numFlag >= 1) {
+        rs += matrix(top)(i)
+        numFlag -= 1
       }
-      j = right - 1
-      i += 1
       top += 1
 
       // top -> floor
-      while (i < floor) {
-        rs += matrix(i)(j)
-        i += 1
+      for (i <- top to floor if numFlag >= 1) {
+        rs += matrix(i)(right)
+        numFlag -= 1
       }
-      i = floor - 1
-      j -= 1
       right -= 1
 
       // right -> left
-      while (j > left) {
-        rs += matrix(i)(j)
-        j -= 1
+      for (i <- (left to right).reverse if numFlag >= 1) {
+        rs += matrix(floor)(i)
+        numFlag -= 1
       }
-      j = left + 1
-      i -= 1
       floor -= 1
 
       // floor -> top
-      while (i > top) {
-        rs += matrix(i)(j)
-        i -= 1
+      for (i <- (top to floor).reverse if numFlag >= 1) {
+        rs += matrix(i)(left)
+        numFlag -= 1
       }
-      i = top + 1
-      j += 1
       left += 1
-
     }
 
     rs.toList
-  }
-
-  def main(args: Array[String]): Unit = {
-    val arr = Utils.mk_two_dimensional_arr(3, 4, 1 to 12: _*)
-    spiralOrder(arr)
   }
 }
 //leetcode submit region end(Prohibit modification and deletion)
