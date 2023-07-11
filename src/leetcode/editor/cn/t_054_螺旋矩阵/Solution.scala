@@ -49,6 +49,9 @@ object Solution {
     var right = matrix.head.length - 1
     var numFlag = matrix.length * matrix.head.length
 
+    /*
+      构建4条边界，依次向内 压缩
+     */
     while (numFlag >= 1) {
       // left -> right
       for (i <- left to right if numFlag >= 1) {

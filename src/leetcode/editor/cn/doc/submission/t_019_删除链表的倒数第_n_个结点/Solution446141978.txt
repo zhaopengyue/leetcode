@@ -1,0 +1,33 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        // 构建1个虚拟头节点
+        ListNode vHead = new ListNode(0, head);
+        // 基于快慢指针, 计算倒数第n个位置
+        ListNode slow = vHead;
+        ListNode fast = vHead;
+        // 让fast先走n步
+        while (n-- > 0) {
+            fast = fast.next;
+        }
+
+        while (fast != null && fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        
+        slow.next = slow.next.next;
+        return vHead.next;
+    }
+}
+//runtime:0 ms
+//memory:39.4 MB

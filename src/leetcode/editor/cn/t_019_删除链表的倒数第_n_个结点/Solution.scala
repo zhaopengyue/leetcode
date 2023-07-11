@@ -40,7 +40,11 @@ package leetcode.editor.cn.t_019_删除链表的倒数第_n_个结点
 // 进阶：你能尝试使用一趟扫描实现吗？ 
 //
 // Related Topics 链表 双指针 👍 2164 👎 0
-
+/*
+解答成功:
+	执行耗时:496 ms,击败了66.67% 的Scala用户
+	内存消耗:56 MB,击败了91.67% 的Scala用户
+ */
 class ListNode(_x: Int = 0, _next: ListNode = null) {
   var next: ListNode = _next
   var x: Int = _x
@@ -58,24 +62,23 @@ object Solution {
         // 因为当只有一个节点，可能会删除它本身，这里创建一个虚拟的头结点
         val vHead = new ListNode()
         vHead.next = head
-        var i = vHead
-        var j = vHead
+        var slow = vHead
+        var fast = vHead
         var index = 0
         // 将j向后位移n位，确保(i,j]区间有n个节点，这样当j指向最后一个节点时，(i,j]区间就会有n个节点，i正好指向倒数第n个节点的前一个节点
         // 注：测试案例中n不会大于链表长度，故无需考虑null情况
         while (index < n) {
-            j = j.next
+            fast = fast.next
             index += 1
         }
-        // 向后循环，直到j.next为null,此时i指向了待删除节点的上一个节点
-        while (j.next != null) {
-            j = j.next
-            i = i.next
+
+        while (fast != null && fast.next != null) {
+            fast = fast.next
+            slow = slow.next
         }
-        // 若待删除节点有后继节点，则进行连接
-        if (i.next != null) {
-            i.next = i.next.next
-        }
+
+        slow.next = slow.next.next
+
         vHead.next
     }
 }

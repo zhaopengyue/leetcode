@@ -1,7 +1,5 @@
 package leetcode.editor.cn.utils
 
-import leetcode.editor.cn.t_143_重排链表.{ListNode, Solution}
-
 import scala.reflect.ClassTag
 
 
@@ -33,4 +31,15 @@ object Utils {
 
     arr
   }
+
+  def print_two_dimensional_arr[T](arr: Array[Array[T]]): Unit = {
+    println("[")
+    for (line <- arr) {
+      print("  [")
+      print(line.mkString(","))
+      println("]")
+    }
+    println("]")
+  }
+
 }

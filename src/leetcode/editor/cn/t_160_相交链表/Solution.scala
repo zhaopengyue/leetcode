@@ -145,6 +145,13 @@ object Solution {
 
          */
         // 方法2
+        /*
+         * 基本思路：将某一条链表的结尾接到另一条链表的头上，这样当遍历过len(A)+len(B)轮后, tmpA和tmpB就会处于同一起点, 例子如下:
+         * a1,a2,c1,c2,c3,b1,b2,b3,|c1,c2,c3
+         * b1,b2,b3,c1,c2,c3,a1,a2,|c1,c2,c3
+         * tmpA遍历轮次 = a_distinct(非相较部分) + common + b_distinct
+         * tmpB遍历轮次 = b_distinct(非相较部分) + common + a_distinct
+         */
         if (headA == null || headB == null) return null
         var tmpA = headA
         var tmpB = headB

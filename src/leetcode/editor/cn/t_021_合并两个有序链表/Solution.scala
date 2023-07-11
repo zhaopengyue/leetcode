@@ -42,9 +42,9 @@ class ListNode(_x: Int = 0, _next: ListNode = null) {
 }
 
 /*
-* 解答成功:
-	执行耗时:524 ms,击败了66.67% 的Scala用户
-	内存消耗:55.6 MB,击败了17.78% 的Scala用户
+ 解答成功:
+	执行耗时:500 ms,击败了90.48% 的Scala用户
+	内存消耗:56.7 MB,击败了52.38% 的Scala用户
 * */
 //leetcode submit region begin(Prohibit modification and deletion)
 /**
