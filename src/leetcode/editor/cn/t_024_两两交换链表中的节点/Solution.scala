@@ -41,8 +41,8 @@ class ListNode(_x: Int = 0, _next: ListNode = null) {
 }
 /*
 * 解答成功:
-	执行耗时:500 ms,击败了41.67% 的Scala用户
-	内存消耗:54.6 MB,击败了50.00% 的Scala用户
+	执行耗时:480 ms,击败了72.73% 的Scala用户
+	内存消耗:56 MB,击败了63.64% 的Scala用户
 * */
 //leetcode submit region begin(Prohibit modification and deletion)
 /**
@@ -54,9 +54,6 @@ class ListNode(_x: Int = 0, _next: ListNode = null) {
  */
 object Solution {
     def swapPairs(head: ListNode): ListNode = {
-        // 特殊处理
-        if (head == null) return null
-        if (head.next == null) return head
         // 构建虚拟头结点
         val vHead = new ListNode()
         vHead.next = head
