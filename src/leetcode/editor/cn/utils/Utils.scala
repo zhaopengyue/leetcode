@@ -1,6 +1,7 @@
 package leetcode.editor.cn.utils
 
 import scala.reflect.ClassTag
+import java.util
 
 
 /**
@@ -41,5 +42,51 @@ object Utils {
     }
     println("]")
   }
+
+  /**
+   * 生成树结构, 返回树的头结点
+   * @param treeStr 数构造字符串, 范例[5,4,8,11,null,13,4,7,2,null,null,5,1],不去除两侧中括号
+   * @return 树头结点
+   */
+  def generateTreeNode(treeStr: String): TreeNode = {
+    val strs = treeStr.substring(1, treeStr.length - 1).split(",")
+    val nums = new Array[Integer](strs.length)
+    for (i <- 0 until strs.length) {
+      if ("null" == strs(i)) nums(i) = null
+      else nums(i) = strs(i).toInt
+    }
+    if (nums == null || nums.length == 0) return null
+    val len = nums.length
+    var index = 0
+    val head = new TreeNode(nums(index))
+    val nodeQueue = new util.LinkedList[TreeNode]
+    nodeQueue.offer(head)
+    var cur: TreeNode = null
+    while ( {
+      index < len
+    }) {
+      index += 1
+      if (index >= len) return head
+      cur = nodeQueue.poll()
+      val left = nums(index)
+      if (left != null) {
+        cur.left = new TreeNode(left)
+        nodeQueue.offer(cur.left)
+      }
+      index += 1
+      if (index >= len) return head
+      val right = nums(index)
+      if (right != null) {
+        cur.right = new TreeNode(right)
+        nodeQueue.offer(cur.right)
+      }
+    }
+    head
+  }
+
+  def main(args: Array[String]): Unit = {
+    generateTreeNode("[5,4,8,11,null,13,4,7,2,null,null,5,1]")
+  }
+
 
 }

@@ -47,7 +47,15 @@ import leetcode.editor.cn.utils.Utils
 class ListNode(_x: Int = 0, _next: ListNode = null) {
   var next: ListNode = _next
   var x: Int = _x
+
+  override def toString: String = s"[$x->${next.x}]"
 }
+
+/**
+ * 解答成功:
+	执行耗时:864 ms,击败了42.86% 的Scala用户
+	内存消耗:66.4 MB,击败了71.43% 的Scala用户
+ */
 //leetcode submit region begin(Prohibit modification and deletion)
 /**
  * Definition for singly-linked list.
@@ -58,35 +66,38 @@ class ListNode(_x: Int = 0, _next: ListNode = null) {
  */
 object Solution {
   def sortList(head: ListNode): ListNode = {
-    sortListReverse(head, null)
-  }
-
-  def sortListReverse(start: ListNode, end: ListNode): ListNode = {
-    var slow, fast = start
-    if (start.next == end) {
-      return start
+    // 递归终止条件 ==> 拆分为单个节点
+    if (head == null || head.next == null) {
+      return head
     }
-    /**
-     * 获取[start,end)的中间节点
-     */
-    while (fast != end && fast.next != end) {
+
+    // 基于快慢指针,将链表拆分为两部分
+    var slow, fast = head
+    while (fast.next != null && fast.next.next != null) {
       slow = slow.next
       fast = fast.next.next
     }
-    sortListReverse(start, slow)
-    sortListReverse(slow, end)
 
-    merge(start, slow, end)
+    // slow为中间节点的上一个节点
+    // 拆链
+    val head2 = slow.next
+    slow.next = null
+
+    val l = sortList(head)
+    val r = sortList(head2)
+
+    // 合并两条链
+    merge(l, r)
   }
 
-  // 按顺序合并[start,mid),[mid,end)区间
-  private def merge(start: ListNode, mid: ListNode, end: ListNode): ListNode = {
+  // merge l1和l2
+  private def merge(l1: ListNode, l2: ListNode): ListNode = {
     val vHead = new ListNode()
     var tail = vHead
 
-    var p = start
-    var q = mid
-    while (p != mid && q != end) {
+    var p = l1
+    var q = l2
+    while (p != null && q != null) {
       if (p.x < q.x) {
         tail.next = p
         p = p.next
@@ -96,8 +107,8 @@ object Solution {
       }
       tail = tail.next
     }
-    if (p != mid) tail.next = p
-    if (q != end) tail.next = q
+    if (p != null) tail.next = p
+    if (q != null) tail.next = q
 
     vHead.next
   }
@@ -116,6 +127,8 @@ object Solution {
 
     println(m.x)
     println(m.next.x)
+    println(m.next.next.x)
+    println(m.next.next.next.x)
 
   }
 
