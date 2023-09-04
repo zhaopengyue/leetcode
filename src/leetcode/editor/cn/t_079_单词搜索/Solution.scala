@@ -50,39 +50,49 @@ import leetcode.editor.cn.utils.Utils._
 //
 // Related Topics 数组 回溯 矩阵 👍 1669 👎 0
 
-
+/**
+ * 解答成功:
+	执行耗时:600 ms,击败了85.71% 的Scala用户
+	内存消耗:55.9 MB,击败了42.86% 的Scala用户
+ */
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
     def exist(board: Array[Array[Char]], word: String): Boolean = {
+        // step0: 构建状态数组 0-未访问 1-访问过
+        val status = Array.fill[Array[Int]](board.length)(Array.fill[Int](board.head.length)(0))
+
         // step1: 寻找第一个匹配的元素
-        val status = new Array[Byte](board.length)
         for ((line, i) <- board.zipWithIndex; (c, j) <- line.zipWithIndex) {
             if (c == word.head) {
-                val rs =  dp(i, j, 1, board, word)
+                status(i)(j) = 1
+                val rs =  dp(i, j, 1, status, board, word)
                 if (rs) {
                     return true
-                } else {
-                    status(i)
                 }
+                status(i)(j) = 0
             }
         }
         false
     }
 
-    private def dp(i: Int, j: Int, no: Int, board: Array[Array[Char]], word: String): Boolean = {
+    private def dp(i: Int, j: Int, no: Int, status: Array[Array[Int]], board: Array[Array[Char]], word: String): Boolean = {
         if (no == word.length) return true
 
+
+        status(i)(j) = 1
         val wordChar = word.charAt(no)
         var isFind = false
         // 从i和j的上下左右开始寻找
         // 上
-        if (i - 1 >= 0 && board(i-1)(j) == wordChar) isFind |= dp(i-1, j, no + 1, board, word)
+        if (i - 1 >= 0 && board(i-1)(j) == wordChar && status(i-1)(j) == 0) isFind |= dp(i-1, j, no + 1, status, board, word)
         // 下
-        if (i + 1 < board.length && board(i+1)(j) == wordChar) isFind |= dp(i+1, j, no + 1, board, word)
+        if (i + 1 < board.length && board(i+1)(j) == wordChar && status(i+1)(j) == 0) isFind |= dp(i+1, j, no + 1, status, board, word)
         // 左
-        if (j - 1 >= 0 && board(i)(j - 1) == wordChar) isFind |= dp(i, j - 1, no + 1, board, word)
+        if (j - 1 >= 0 && board(i)(j - 1) == wordChar && status(i)(j - 1) == 0) isFind |= dp(i, j - 1, no + 1, status, board, word)
         // 右
-        if (j + 1 < board.head.length && board(i)(j + 1) == wordChar) isFind |= dp(i, j + 1, no + 1, board, word)
+        if (j + 1 < board.head.length && board(i)(j + 1) == wordChar && status(i)(j + 1) == 0) isFind |= dp(i, j + 1, no + 1, status, board, word)
+
+        status(i)(j) = 0
 
         isFind
     }
