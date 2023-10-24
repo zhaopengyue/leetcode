@@ -45,34 +45,46 @@ package leetcode.editor.cn.t_033_搜索旋转排序数组
 //
 // Related Topics 数组 二分查找 👍 2282 👎 0
 
-
+/**
+ * 解答成功:
+	执行耗时:484 ms,击败了85.71% 的Scala用户
+	内存消耗:54.3 MB,击败了57.14% 的Scala用户
+ */
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
     def search(nums: Array[Int], target: Int): Int = {
-        var i = 0;
-        var j = nums.length - 1;
-        while (i <= j) {
-            val middle = (i + j) >> 1
-            val v = nums(middle)
-            if (target == v) return middle
-            if (nums(middle) > nums(0)) {
-                // 左半部分有序
-                if (nums(0) <= target && target <= v) {
-                    // target位于左半部分有序区间
-                    j = middle - 1
-                } else {
-                    i = middle + 1
-                }
-            }  else {
-                // 右半部分为有序
-                if (v <= target && target <= nums(j)) {
-                    i = middle + 1
-                } else {
-                    j = middle - 1
-                }
-            }
+      var i = 0
+      var j = nums.length - 1
+
+      while (i <= j) {
+        val mid = (i + j) >> 1
+        val midV = nums(mid)
+
+        if (midV == target) return mid
+
+        if (midV < nums(0)) {
+          // 0 ~ mid为无序区间, mid~nums(j)为有序区间
+          if (target > midV && target >= nums(0)) {
+            j = mid - 1
+          } else if (target > midV && target < nums(0)) {
+            i = mid + 1
+          } else {
+            // target < midV < nums(0), 只能有左侧最大值~mid之间
+            j = mid - 1
+          }
+        } else {
+          // 0~mid为有序区间, mid~nums(j)可能为无序区间
+          if (target < midV && target >= nums(0)) {
+            j = mid - 1
+          } else if (target < midV && target < nums(0)) {
+            i = mid + 1
+          } else {
+            // target > midV >= num(0)
+            i = mid + 1
+          }
         }
-        -1
+      }
+      -1
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

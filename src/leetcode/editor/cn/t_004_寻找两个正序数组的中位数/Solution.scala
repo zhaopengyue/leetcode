@@ -46,7 +46,58 @@ import java.util.{Comparator, PriorityQueue}
 object Solution {
 
     def findMedianSortedArrays(nums1: Array[Int], nums2: Array[Int]): Double = {
-        findMedianSortedArraysByGuiBing(nums1, nums2)
+        findMedianSortedArraysByMiddle(nums1, nums2)
+    }
+
+    /**
+     * 解答成功:
+          执行耗时:640 ms,击败了82.35% 的Scala用户
+          内存消耗:57 MB,击败了76.47% 的Scala用户
+     */
+    def findMedianSortedArraysByMiddle(nums1: Array[Int], nums2: Array[Int]): Double = {
+        val len1 = nums1.length
+        val len2 = nums2.length
+
+        if (((len1 + len2) & 1) == 1) {
+            // 奇数
+            findMedianSortedArraysByMiddleDp(nums1, nums2, 0, len1 - 1, 0, len2 - 1, ((len1 + len2) >> 1) + 1)
+        } else {
+            // 偶数情况
+            (findMedianSortedArraysByMiddleDp(nums1, nums2, 0, len1 - 1, 0, len2 - 1, (len1 + len2) >> 1) +
+              findMedianSortedArraysByMiddleDp(nums1, nums2, 0, len1 - 1, 0, len2 - 1, ((len1 + len2) >> 1) + 1)) * 0.5
+        }
+
+    }
+
+    // 从nums1[nums1Left:end],nums2[nums2Left:end]寻找第k大的数
+    private def findMedianSortedArraysByMiddleDp(nums1: Array[Int],
+                                                 nums2: Array[Int],
+                                                 nums1Left: Int,
+                                                 nums1Right: Int,
+                                                 nums2Left: Int,
+                                                 nums2Right: Int,
+                                                 k: Int): Int = {
+        val len1 = nums1Right - nums1Left + 1
+        val len2 = nums2Right - nums2Left + 1
+        // 确保nums1永远比nums2短
+        if (len1 > len2) return findMedianSortedArraysByMiddleDp(nums2, nums1, nums2Left, nums2Right, nums1Left, nums1Right, k)
+
+        // nums1为空时, 第k大数从nums2中取即可
+        if (len1 == 0) return nums2(nums2Left + k - 1)
+
+        // 当k为1时表示递归结束, 此时选取两者中最小的值即为第k个值(因为k从原始k变为1经过了原始k/2轮比较,已经去掉了原始k-1个数字,则此轮小值即为原始第k个值)
+        if (k == 1) return Math.min(nums1(nums1Left), nums2(nums2Left))
+
+        val kMid = k / 2
+        val nums1Index = nums1Left + Math.min(len1, kMid) - 1
+        val nums2Index = nums2Left + Math.min(len2, kMid) - 1
+
+        if (nums1(nums1Index) < nums2(nums2Index)) {
+            // 表示nums1[nums1Left: nums1Index]范围内的数不可能是第k大的数
+            findMedianSortedArraysByMiddleDp(nums1, nums2, nums1Index + 1, nums1Right, nums2Left, nums2Right, k - (nums1Index - nums1Left + 1))
+        } else {
+            findMedianSortedArraysByMiddleDp(nums1, nums2, nums1Left, nums1Right, nums2Index + 1, nums2Right, k - (nums2Index - nums2Left + 1))
+        }
     }
 
     /*
