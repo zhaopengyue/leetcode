@@ -62,8 +62,8 @@ import leetcode.editor.cn.utils.Utils._
 
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
-    def findSubstring(s: String, words: Array[String]): List[Int] = {
-
-    }
+//    def findSubstring(s: String, words: Array[String]): List[Int] = {
+//
+//    }
 }
 //leetcode submit region end(Prohibit modification and deletion)

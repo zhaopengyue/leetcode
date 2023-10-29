@@ -34,11 +34,30 @@ import leetcode.editor.cn.utils.Utils._
 //
 // Related Topics 数组 动态规划 👍 1082 👎 0
 
-
+/**
+ * 解答成功:
+ * 执行耗时:424 ms,击败了100.00% 的Scala用户
+ * 内存消耗:51.6 MB,击败了66.67% 的Scala用户
+ */
 //leetcode submit region begin(Prohibit modification and deletion)
+import scala.collection.mutable.ListBuffer
 object Solution {
     def generate(numRows: Int): List[List[Int]] = {
-
+        val rs = new ListBuffer[List[Int]]
+        rs += List(1)
+        val line = new ListBuffer[Int]
+        for (i <- 1 until numRows) {
+            line.clear()
+            for (j <- 0 to i) {
+                if (j == 0 || j == i) {
+                    line += 1
+                } else {
+                    line += rs(i - 1)(j - 1) + rs(i - 1)(j)
+                }
+            }
+            rs += line.toList
+        }
+        rs.toList
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
