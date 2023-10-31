@@ -52,7 +52,11 @@ import leetcode.editor.cn.utils.Utils._
 //
 // Related Topics 数学 动态规划 组合数学 👍 1921 👎 0
 
-
+/*
+解答成功:
+  执行耗时:428 ms,击败了23.53% 的Scala用户
+  内存消耗:51.5 MB,击败了11.76% 的Scala用户
+ */
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
 
@@ -63,11 +67,21 @@ object Solution {
         /*ans = 0
         byReverse(0, 0, m, n)
         ans*/
-        byDP(m, n)
+        byDP2(m, n)
+    }
+
+    // 空间复杂度优化版本DP
+    private def byDP2(m: Int, n: Int): Int = {
+        val status = Array.fill(n)(1)
+        for (_ <- 1 until m; j <- 1 until n) {
+            // status[j] = status[j] + status[j-1], 此处第二个status[j]表示上一行同列的值,status[j-1]表示同一行上一列的值
+            status(j) += status(j - 1)
+        }
+        status(n - 1)
     }
 
     private def byDP(m: Int, n: Int): Int = {
-        // 构建二维状态数组, status[i][j]表示走到(i,j)公有多少种走法
+        // 构建二维状态数组, status[i][j]表示走到(i,j)共有多少种走法
         val status = Array.fill(m)(Array.fill(n)(0))
         // 初始化status, 对于初始行和列的元素来说, 走到对应位置只有一种走法
         for (i <- 0 until m) {
@@ -77,6 +91,11 @@ object Solution {
             status(0)(i) = 1
         }
 
+        for (i <- 1 until m; j <- 1 until n) {
+            status(i)(j) = status(i - 1)(j) + status(i)(j - 1)
+        }
+
+        status(m - 1)(n - 1)
     }
 
     // 基于回溯方式计算
