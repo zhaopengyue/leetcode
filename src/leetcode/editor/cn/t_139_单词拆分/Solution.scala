@@ -46,7 +46,29 @@ package leetcode.editor.cn.t_139_单词拆分
 
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
+
     def wordBreak(s: String, wordDict: List[String]): Boolean = {
+        // 构建dict
+        val wordMap = wordDict.toSet
+
+        // status[i]表示[0~i)的字符串是否可拆分
+        val status = Array.fill(s.length + 1)(false)
+
+        // 确保s[0:1]经过了wordDict判断
+        status(0) = true
+
+        for (i <- 1 to s.length) {
+            var isBreak = false
+            for (j <- (0 until i).reverse if ! isBreak) {
+                if (wordMap.contains(s.substring(j, i)) && status(j)) {
+                    status(i) = true
+                    // 表示0~i已经可以拆分为单词了，则结束当前i
+                    isBreak = true
+                }
+            }
+        }
+
+        status(s.length)
 
     }
 }

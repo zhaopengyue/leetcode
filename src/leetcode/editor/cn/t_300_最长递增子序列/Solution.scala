@@ -45,27 +45,33 @@ package leetcode.editor.cn.t_300_最长递增子序列
 //
 // Related Topics 数组 二分查找 动态规划 👍 2740 👎 0
 
-
+/**
+ * 解答成功:
+	执行耗时:500 ms,击败了100.00% 的Scala用户
+	内存消耗:54.5 MB,击败了100.00% 的Scala用户
+ */
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
     def lengthOfLIS(nums: Array[Int]): Int = {
-        val dp = new Array[Int](nums.length)
-        dp(0) = 1
-        for (i <- 1 until nums.length) {
-            val num = nums(i)
-            var maxLen = 1
-            var j = i - 1
-            while (j >= 0) {
-                if (num > nums(j)) {
-                    maxLen = math.max(maxLen, dp(j) + 1)
-                }
-                j -= 1
+
+        // tail是一个非递减数组，其中tail[k]表示递增子序列长度为k+1的末尾元素值
+        // eg: 对于tail=[1,3,5]中的tail[2]=5表示递增子序列长度为3的元素的末尾值为5
+        val tail = new Array[Int](nums.length)
+        var res = 0
+
+        nums.foreach(v => {
+            var l = 0
+            var r = res
+            // 寻找第一个大于等于v的值
+            while (l < r) {
+                val m = (l + r) >> 1
+                if (tail(m) < v) l = m + 1 else r = m
             }
-            dp(i) = maxLen
-        }
-        dp(nums.length - 1)
+            tail(l) = v
+            if (l == res) res += 1
+        })
+
+        res
     }
-
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
