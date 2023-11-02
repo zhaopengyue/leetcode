@@ -42,12 +42,9 @@ object Solution {
     * 如何根据状态数组确定最长回文子串：
     * 构建的时候每次都记录当前记录到的最大的子串的开始和技术索引
     * */
-    if (s.length <= 1) {
-      return s
-    }
-    if (s.length == 2) {
-      return String.valueOf(if (s.charAt(0) == s.charAt(1)) s else s(0))
-    }
+    if (s.length <= 1) return s
+    if (s.length == 2) return String.valueOf(if (s.charAt(0) == s.charAt(1)) s else s(0))
+
     val status = Array.fill(s.length, s.length)(false)
 
     var maxI = 0
@@ -83,12 +80,6 @@ object Solution {
       }
     }
 
-    //for (line <- status) {
-    //  for (s <- line) {
-    //    print(s"$s ")
-    //  }
-    //  println()
-    //}
     s.substring(maxI, maxI + maxLen)
   }
 }
