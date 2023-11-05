@@ -1,0 +1,83 @@
+import scala.collection.mutable
+import scala.util.control.Breaks
+object Solution {
+    def minWindow(s: String, t: String): String = {
+        if (s.length < t.length) return ""
+
+        // step1: 构建tMap
+        val sMap = new mutable.HashMap[Char, Int]()
+        val tMap = new mutable.HashMap[Char, Int]()
+
+        t.foreach(c => {
+            if (tMap.contains(c)) {
+                tMap(c) += 1
+            } else {
+                tMap(c) = 1
+            }
+        })
+
+        var minI = 0
+        var minJ = -1
+        var minLen = Int.MaxValue
+
+        var i = 0
+        var j = 0
+
+        while (j < s.length) {
+            val c = s.charAt(j)
+            if (sMap.contains(c)) {
+                sMap(c) += 1
+            } else {
+                sMap(c) = 1
+            }
+
+            // 比较当前sMap和tMap
+            if (comparator(sMap, tMap)) {
+
+                // 找到一个满足条件的子串
+                // 向右滑动i，直到i满足最小要求
+                val loop = new Breaks()
+                loop.breakable {
+                    while (i <= j) {
+                        val removeKey = s.charAt(i)
+                        if (tMap.contains(removeKey)) {
+                            if (sMap(removeKey) < tMap(removeKey)) {
+                                // 已经不满足条件，则退出
+                                loop.break()
+                            } else if (comparator(sMap, tMap)) {
+                                if (j - i + 1 < minLen) {
+                                    minI = i
+                                    minJ = j
+                                    minLen = j - i + 1
+                                }
+                            }
+                        }
+                        sMap(removeKey) -= 1
+                        i += 1
+                    }
+                }
+
+            }
+            j += 1
+        }
+
+        s.substring(minI, minJ + 1)
+
+    }
+
+    private def comparator(sMap: mutable.HashMap[Char, Int], tMap: mutable.HashMap[Char, Int]): Boolean = {
+        for ((k, v) <- tMap) {
+            if (! sMap.contains(k) || sMap(k) < v) return false
+        }
+        true
+    }
+}
+
+//total_testcases:267
+//total_correct:220
+//input_formatted:"bdab"
+"ab"
+//expected_output:"ab"
+//code_output:"bda"
+//last_testcase:"bdab"
+"ab"

@@ -2,7 +2,7 @@ package leetcode.editor.cn.utils
 
 import scala.reflect.ClassTag
 import java.util
-
+import scala.language.implicitConversions
 
 /**
  * @author zhaopengyue
@@ -31,6 +31,18 @@ object Utils {
     }
 
     arr
+  }
+
+  /**
+   * 生成二维数组，字符串范例为：[[2,1,1],[1,1,0],[0,1,1]]
+   * @param caseString 二维数组字符串
+   * @param op 转化为指定类型
+   * @tparam T 类型
+   * @return
+   */
+  def mk_two_dimensional_arr[T: ClassTag](caseString: String)(op: String => T): Array[Array[T]] = {
+    for (line <- caseString.stripPrefix("[").stripSuffix("]").split("]"))
+      yield line.replaceAll(",?\\[|\"|\'", "").split(",").map(op)
   }
 
   def print_two_dimensional_arr[T](arr: Array[Array[T]]): Unit = {
