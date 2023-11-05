@@ -1,4 +1,5 @@
 package leetcode.editor.cn.t_076_最小覆盖子串
+
 //给你一个字符串 s 、一个字符串 t 。返回 s 中涵盖 t 所有字符的最小子串。如果 s 中不存在涵盖 t 所有字符的子串，则返回空字符串 "" 。 
 //
 // 
@@ -62,67 +63,67 @@ package leetcode.editor.cn.t_076_最小覆盖子串
 import scala.collection.mutable
 import scala.util.control.Breaks
 object Solution {
-    def minWindow(s: String, t: String): String = {
-        if (s.length < t.length) return ""
+  def minWindow(s: String, t: String): String = {
+    if (s.length < t.length) return ""
 
-        val need = new mutable.HashMap[Char, Int]()
+    val need = new mutable.HashMap[Char, Int]()
 
-        t.foreach(c => {
+    t.foreach(c => {
+      if (need.contains(c)) {
+        need(c) += 1
+      } else {
+        need(c) = 1
+      }
+    })
+
+    var needNums = t.length
+
+    var minI = 0
+    var minJ = -1
+    var minLen = Int.MaxValue
+
+    var i = 0
+    var j = 0
+
+    while (j < s.length) {
+      var c = s.charAt(j)
+      // step1: 寻找满足所有字符的串
+      if (need.contains(c)) {
+        // need(c)可以为负数,确保重置i时多余的字符可以被剔除
+        need(c) -= 1
+        if (need(c) >= 0) needNums -= 1
+      }
+
+      if (needNums == 0) {
+        val loop = new Breaks()
+
+        // step2: 尽可能缩减i, 使得以i开头的串为一个当前满足所有条件的最小串
+        loop.breakable {
+          while (true) {
+            c = s.charAt(i)
             if (need.contains(c)) {
-                need(c) += 1
-            } else {
-                need(c) = 1
+              if (need(c) == 0) loop.break()
+              need(c) += 1
             }
-        })
-
-        var needNums = t.length
-
-        var minI = 0
-        var minJ = -1
-        var minLen = Int.MaxValue
-
-        var i = 0
-        var j = 0
-
-        while (j < s.length) {
-            var c = s.charAt(j)
-            // step1: 寻找满足所有字符的串
-            if (need.contains(c)) {
-                // need(c)可以为负数,确保重置i时多余的字符可以被剔除
-                need(c) -= 1
-                if (need(c) >= 0) needNums -= 1
-            }
-
-            if (needNums == 0) {
-                val loop = new Breaks()
-
-                // step2: 尽可能缩减i, 使得以i开头的串为一个当前满足所有条件的最小串
-                loop.breakable {
-                    while (true) {
-                        c = s.charAt(i)
-                        if (need.contains(c)) {
-                            if (need(c) == 0) loop.break()
-                            need(c) += 1
-                        }
-                        i += 1
-                    }
-                }
-                // step3: 计算当前长度
-                if (j - i + 1 < minLen) {
-                    minI = i
-                    minJ = j
-                    minLen = j - i + 1
-                }
-                // step4: 此时i一定指向了t中的元素, 剔除当前元素, 开始step1
-                need(s.charAt(i)) += 1
-                i += 1
-                needNums += 1
-            }
-            j += 1
+            i += 1
+          }
         }
-
-        s.substring(minI, minJ + 1)
-
+        // step3: 计算当前长度
+        if (j - i + 1 < minLen) {
+          minI = i
+          minJ = j
+          minLen = j - i + 1
+        }
+        // step4: 此时i一定指向了t中的元素, 剔除当前元素, 开始step1
+        need(s.charAt(i)) += 1
+        i += 1
+        needNums += 1
+      }
+      j += 1
     }
+
+    s.substring(minI, minJ + 1)
+
+  }
 }
 //leetcode submit region end(Prohibit modification and deletion)
