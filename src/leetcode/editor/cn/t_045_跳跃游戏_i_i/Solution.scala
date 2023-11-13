@@ -43,7 +43,9 @@ import leetcode.editor.cn.utils.Utils._
 //
 // Related Topics 贪心 数组 动态规划 👍 2322 👎 0
 
-
+/**
+ * 超过80% 90%
+ */
 //leetcode submit region begin(Prohibit modification and deletion)
 object Solution {
     def jump(nums: Array[Int]): Int = {
