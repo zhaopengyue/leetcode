@@ -1,0 +1,39 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode(_x: Int = 0, _next: ListNode = null) {
+ *   var next: ListNode = _next
+ *   var x: Int = _x
+ * }
+ */
+import java.util.{Comparator, PriorityQueue}
+object Solution {
+    def mergeKLists(lists: Array[ListNode]): ListNode = {
+        if (lists.isEmpty) return null
+        // 使用小顶堆
+        val heap = new PriorityQueue[ListNode](lists.length, new Comparator[ListNode] {
+            override def compare(o1: ListNode, o2: ListNode): Int = o1.x - o2.x
+        })
+        // 初始每个链表的第一个节点放入
+        for (l <- lists ) {
+            if (l != null) {
+                heap.add(l)
+            }
+        }
+        // 虚拟头结点
+        val vHead = new ListNode()
+        var currNode = vHead
+        while (! heap.isEmpty) {
+            val smallNode = heap.poll()
+            currNode.next = smallNode
+            if (smallNode.next != null) {
+                // 将最小值的下一个节点入堆
+                heap.add(smallNode.next)
+            }
+            currNode = smallNode
+        }
+        vHead.next
+    }
+}
+
+//runtime:588 ms
+//memory:57.9 MB

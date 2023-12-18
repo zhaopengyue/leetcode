@@ -61,9 +61,60 @@ import leetcode.editor.cn.utils.Utils._
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
+import scala.util.control.Breaks
+
 object Solution {
-//    def findSubstring(s: String, words: Array[String]): List[Int] = {
-//
-//    }
+  def findSubstring(s: String, words: Array[String]): List[Int] = {
+    val rs = new ListBuffer[Int]
+
+    val wordLen = words.head.length
+    val wordNum = words.length
+    val sLen = s.length
+
+
+    val loop = new Breaks
+    loop.breakable {
+      for (i <- 0 until wordLen) {
+        if (i + wordLen * wordNum > s.length) {
+          loop.break()
+        }
+        val diff = new mutable.HashMap[String, Int]()
+        // step1: 从i开始, 将s[i:i+wordNum*wordLen]分割为长度为wordLen的串，并记录diff值
+        for (j <- 0 until wordNum) {
+          val word = s.substring(i + j * wordLen, i + (j + 1) * wordLen)
+          diff += (word -> (diff.getOrElse(word, 0) + 1))
+        }
+        // step2: 根据words调整diff
+        for (word <- words) {
+          diff += (word -> (diff.getOrElse(word, 0) - 1))
+          if (diff(word) == 0) {
+            diff.remove(word)
+          }
+        }
+        // step3: 开始向右滑动窗口
+        var start = i
+        while (start < sLen - wordLen * wordNum + 1) {
+          if (start != i) {
+            // 右侧单词滑入
+            var word = s.substring(start + wordLen * (wordNum - 1), start + wordLen * wordNum)
+            diff += (word -> (diff.getOrElse(word, 0) + 1))
+            if (diff(word) == 0) diff.remove(word)
+            // 左侧单词滑出
+            word = s.substring(start - wordLen, start)
+            diff += (word -> (diff.getOrElse(word, 0) - 1))
+            if (diff(word) == 0) diff.remove(word)
+          }
+          if (diff.isEmpty) {
+            rs += start
+          }
+          start += wordLen
+        }
+      }
+    }
+
+    rs.toList
+  }
 }
 //leetcode submit region end(Prohibit modification and deletion)

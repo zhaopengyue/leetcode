@@ -49,21 +49,19 @@ import leetcode.editor.cn.utils.Utils._
 object Solution {
     def lengthOfLastWord(s: String): Int = {
         val len = s.length
-        var end = s.length - 1
+        var end = Int.MinValue
         var isStartWord = false
         for (i <- s.indices.reverse) {
             val c = s.charAt(i)
-            if (isWord(c) && end == len - 1) {
+            if (isWord(c) && end == Int.MinValue) {
                 end = i
                 isStartWord = true
             } else if (!isWord(c) && isStartWord) {
-                println(end)
-                println(i)
-                return end - i + 1
+                return end - i
             }
         }
 
-         -1
+        end + 1
     }
 
     private def isWord(c: Char): Boolean = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')

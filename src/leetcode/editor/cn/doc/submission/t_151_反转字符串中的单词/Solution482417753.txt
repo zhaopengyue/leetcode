@@ -1,0 +1,32 @@
+import scala.collection.mutable
+object Solution {
+    def reverseWords(s: String): String = {
+        val buffer = new mutable.StringBuilder
+        val len = s.length
+        var end = len - 1
+        var isStart = false
+
+        for (i <- s.indices.reverse) {
+            val status = isWord(s.charAt(i))
+            if (status && i - 1 < 0) {
+                buffer.append(s.substring(i, end + 1) + " ")
+                end = i
+                isStart = false
+            } else if (status && ! isStart) {
+                end = i
+                isStart = true
+            } else if (!status && isStart) {
+                buffer.append(s.substring(i + 1, end + 1) + " ")
+                end = i
+                isStart = false
+            }
+        }
+
+        buffer.toString().trim
+    }
+
+    private def isWord(c: Char): Boolean = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')
+}
+
+//runtime:580 ms
+//memory:54.8 MB
