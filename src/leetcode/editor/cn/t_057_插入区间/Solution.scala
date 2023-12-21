@@ -69,27 +69,59 @@ object Solution {
         val addL = newInterval(0)
         val addR = newInterval(1)
 
-        var currL = math.min(intervals.head(0), addL) // 当前左边界
-        var currR = math.max(intervals.head(1), addR) // 当前右边界
+        var lastL = -1 // 上一个左边界
+        var lastR = -1 // 上一个右边界
 
-        for (item <- intervals.tail) {
-            val l = item(0)
-            val r = item(1)
+        // 插入的元素是否已经处理过了
+        var isDeal = false
 
-            // currL一定小于l
-            if (currR  < l) {
-                // 添加上一部分到结果集中
-                rs += Array(currL, currR)
+        intervals.foreach(interval => {
+            var left = interval(0)
+            var right = interval(1)
+
+            if (lastR < left) {
+                // 当前左边界大于上一个右边界, 将上一个范围添加到结果集中
+                rs += Array(lastL, lastR)
+            } else {
+                // 区间存在交叉, 重新计算节点的左右边界
+                left = math.min(lastL, left)
+                right = math.max(lastR, right)
             }
-            // 基于当前节点重新节点currL及currR
-            if (addL <= r && addL >= currR) {
-                // 左边界位于范围内才重新计算
-                currL = math.min(addL, l)
-                currR = math.min(addR, r)
+            // 根据当前节点的左右边界与待添加节点,来判断当前节点的状态
+            if (! isDeal) {
+                // 若未处理新增的元素
+                if ((addL >= left && addL <= right) || (addR >= left && addR <= right) || (addL <= left && addR >= right)) {
+                    // 新增的元素与当前元素有交集
+                    isDeal = true
+                    lastL = math.min(left, addL)
+                    lastR = math.max(right, addR)
+                } else if (addL > lastR && addR < left) {
+                    // 新增的元素正好位于前一个元素和当前元素之间
+                    rs += Array(addL, addR)
+                    isDeal = true
+                    lastL = left
+                    lastR = right
+                } else {
+                    // 无任何交集
+                    lastL = left
+                    lastR = right
+                }
+            } else {
+                lastL = left
+                lastR = right
             }
+        })
+
+        rs += Array(lastL, lastR)
+        if (! isDeal) {
+            // 若未被处理, 则直接添加到末尾
+            rs += Array(addL, addR)
         }
 
-        rs.toArray
+        // 去除第一个初始化值
+        val ans = new Array[Array[Int]](rs.length - 1)
+        (1 until rs.length).foreach(i => ans(i-1) = rs(i))
+        ans
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
