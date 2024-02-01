@@ -56,7 +56,7 @@ object Utils {
   }
 
   /**
-   * 生成树结构, 返回树的头结点
+   * 生成树结构, 返回树的头结点--前序遍历
    * @param treeStr 数构造字符串, 范例[5,4,8,11,null,13,4,7,2,null,null,5,1],不去除两侧中括号
    * @return 树头结点
    */
@@ -97,7 +97,7 @@ object Utils {
   }
 
   def main(args: Array[String]): Unit = {
-    generateTreeNode("[5,4,8,11,null,13,4,7,2,null,null,5,1]")
+    generateTreeNode("[3,9,20,null,null,15,7]")
   }
 
 

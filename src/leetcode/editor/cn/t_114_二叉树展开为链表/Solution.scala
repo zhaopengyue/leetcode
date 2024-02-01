@@ -66,31 +66,25 @@ class TreeNode(_value: Int = 0, _left: TreeNode = null, _right: TreeNode = null)
 import scala.collection.mutable
 object Solution {
     def flatten(root: TreeNode): Unit = {
-        // 非递归前序遍历（栈） + 虚拟节点方式
-        method1(root)
-    }
-
-    def method1(root: TreeNode): Unit = {
         if (root == null) return
-        val stack = new mutable.Stack[TreeNode]()
-        // 注：这里采用非递归方式进行前序遍历
-        var curr: TreeNode = root
-        // prev用于记录遍历链
-        var prev: TreeNode = root
+        val stack = new mutable.ArrayStack[TreeNode]
+        var curr = root
+        var prev = root // prev表示遍历链的上一个遍历到的节点
+
+        // 非递归前序遍历
         while (stack.nonEmpty || curr != null) {
-            // 将左结点处理完成
             while (curr != null) {
                 prev = curr
                 stack.push(curr)
                 curr = curr.left
             }
+            // 所有左结点遍历结束
             if (stack.nonEmpty) {
-                val next = stack.pop().right
-                prev.left = next
-                curr = next
+                val node = stack.pop()
+                prev.left = node.right // 将右子树整体放到上一次遍历的左子树的后面
+                curr = node.right
             }
         }
-        // 前序遍历完成后，左侧为题目顺序，然后改成右侧
         curr = root
         while (curr != null) {
             curr.right = curr.left
