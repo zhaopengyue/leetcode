@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * class TreeNode(_value: Int = 0, _left: TreeNode = null, _right: TreeNode = null) {
+ *   var value: Int = _value
+ *   var left: TreeNode = _left
+ *   var right: TreeNode = _right
+ * }
+ */
+import java.util
+
+object Solution {
+
+
+    private var minV = Int.MaxValue
+
+    def getMinimumDifference(root: TreeNode): Int = {
+        minV = Int.MaxValue
+        process(root)
+        minV
+    }
+
+    private def process(root: TreeNode): Unit = {
+        // 基于二叉搜索树性质, 最小绝对差值仅仅会出现在root与其某个孩子节点之间
+        if (root == null) return
+        if (root.left != null) minV = math.min(minV, math.abs(root.value - root.left.value))
+        if (root.right != null) minV = math.min(minV, math.abs(root.value - root.right.value))
+        process(root.left)
+        process(root.right)
+    }
+
+}
+
+//total_testcases:189
+//total_correct:128
+//input_formatted:[236,104,701,null,227,null,911]
+//expected_output:9
+//code_output:123
+//last_testcase:[236,104,701,null,227,null,911]

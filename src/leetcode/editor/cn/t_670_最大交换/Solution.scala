@@ -33,24 +33,32 @@ import leetcode.editor.cn.utils.Utils._
 object Solution {
     def maximumSwap(num: Int): Int = {
 
-        val numStr = num.toString
-        val maxArr = new Array[Int](numStr.length)
-        var currMaxCI = -1
-        var currMaxC = Char.MinValue
-        numStr.indices.reverse.foreach(i => {
-            val currChar = numStr.charAt(i)
-            if (currMaxCI == -1) {
-                maxArr(i) = currChar
+        val numStrArr = num.toString.toCharArray
+        var currMaxCI = numStrArr.length - 1
+        // 左侧待交换节点
+        var p = -1
+        // 右侧尽量靠右侧的节点
+        var q = -1
+        // 计算每个元素包含自己右侧最大的元素索引
+        numStrArr.indices.reverse.foreach(i => {
+            val currChar = numStrArr(i)
+            if (currChar > numStrArr(currMaxCI)) {
                 currMaxCI = i
-            } else {
-                // 比较当前值与当前最大值
-                if (currChar >= )
+            } else if (currChar < numStrArr(currMaxCI)) {
+                // 尽可能使得p向左，q向右
+                p = i
+                q = currMaxCI
             }
         })
 
-        val queue = new java.util.Pri
+        if (p != -1) {
+            // 原始非倒序排列
+            val tmp = numStrArr(p)
+            numStrArr(p) = numStrArr(q)
+            numStrArr(q) = tmp
+        }
 
-        originArr.mkString.toInt
+        new String(numStrArr).toInt
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
