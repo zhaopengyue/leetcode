@@ -74,12 +74,10 @@ object Solution {
         // 标记当前节点被访问过
         grid(x)(y) = '2'
         // 遍历四次
-        for (_ <- 0 until 4) {
-            if (x - 1 >= 0) reverse(x - 1, y, grid) // 上
-            if (x + 1 < grid.length) reverse(x + 1, y, grid) // 下
-            if (y - 1 >= 0) reverse(x, y - 1, grid) // 左
-            if (y + 1 < grid.head.length) reverse(x, y + 1, grid) // 右
-        }
+        if (x - 1 >= 0) reverse(x - 1, y, grid) // 上
+        if (x + 1 < grid.length) reverse(x + 1, y, grid) // 下
+        if (y - 1 >= 0) reverse(x, y - 1, grid) // 左
+        if (y + 1 < grid.head.length) reverse(x, y + 1, grid) // 右
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

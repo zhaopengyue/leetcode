@@ -59,46 +59,25 @@ class TreeNode(_value: Int = 0, _left: TreeNode = null, _right: TreeNode = null)
  */
 object Solution {
 
-    // arr[0] -> minV arr[1] -> maxV
-    private var arr: Array[Long] = _
-
-    def isValidBSTPri(root: TreeNode): Boolean = {
-        // 空节点直接返回
-        if (root == null) return true
-        // 叶子结点的最大值和最小值均为本身
-        if (root.left == null && root.right == null) {
-            arr(0) = root.value
-            arr(1) = root.value
-            return true
-        }
-        // 非叶子结点
-        // 计算左子树最小值, root的值必须比左子树最大值大
-        if (root.left != null) {
-            if (!isValidBSTPri(root.left) || root.value <= arr(1)) return false
-        } else {
-            arr(0) = Long.MaxValue
-        }
-        // 暂存最小值
-        val min = arr(0)
-
-        // 计算右子树最大值, root的值必须比右子树最小值小
-        if (root.right != null) {
-            if (!isValidBSTPri(root.right) || root.value >= arr(0)) return false
-        } else {
-            arr(1) = Long.MinValue
-        }
-        // 暂存最大值
-        val max = arr(1)
-
-        // 若上述校验通过, 则说明以root为根的树为二叉搜索树, 该树的最小值为左子树最小值, 最大值为右子树最大值
-        arr(0) = Math.min(min, root.value)
-        arr(1) = Math.max(max, root.value)
-        true
+    def isValidBST(root: TreeNode): Boolean = {
+        check(root, Long.MinValue, Long.MaxValue)
     }
 
-    def isValidBST(root: TreeNode): Boolean = {
-       arr = Array(Long.MaxValue, Long.MinValue)
-       isValidBSTPri(root)
+    private def check(root: TreeNode, min: Long, max: Long): Boolean = {
+        if (root == null) return true
+        // 检查当前节点是否满足最小最小值
+        if (root.value <= min || root.value >= max) return false
+        if (root.left != null) {
+            if (root.left.value >= root.value) return false
+            // 左结点满足规则, 递归检查左子树, 若不满足, 则直接返回false
+            if (!check(root.left, min, root.value)) return false
+        }
+        if (root.right != null) {
+            if (root.right.value <= root.value) return false
+            if (!check(root.right, root.value, max)) return false
+        }
+        // 所有检查皆通过
+        true
     }
 
 }
