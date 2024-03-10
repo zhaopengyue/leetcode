@@ -59,6 +59,7 @@ import leetcode.editor.cn.utils.Utils._
 
 //leetcode submit region begin(Prohibit modification and deletion)
 import scala.collection.mutable
+import scala.util.control.Breaks
 object Solution {
 
     def minMutation(startGene: String, endGene: String, bank: Array[String]): Int = {
@@ -76,33 +77,42 @@ object Solution {
 
       val items = Array('A', 'G', 'C', 'T')
 
-      while (queue.nonEmpty) {
-        var size = queue.size
-        while (size > 0) {
-          val s = queue.dequeue()
-          val step = stepMap(s)
-          val sA = s.toCharArray
-          // 依次变换每个元素
-          for (i <- 0 until 8) {
-            items.foreach(c => {
-              val oldC = s(i)
-              if (c != s(i)) {
-                sA(i) = c
-                val ns = String.valueOf(sA)
-                if (bankSet.contains(ns) && ! stepMap.contains(ns)) {
-                  if (ns == endGene) return step + 1
-                  stepMap += (ns -> (step + 1))
-                  queue.enqueue(ns)
+      val loop = new Breaks()
+      var breakStep = -1
+
+      loop.breakable {
+        while (queue.nonEmpty) {
+          var size = queue.size
+          while (size > 0) {
+            val s = queue.dequeue()
+            val step = stepMap(s)
+            val sA = s.toCharArray
+            // 依次变换每个元素
+            for (i <- 0 until 8) {
+              items.foreach(c => {
+                val oldC = s(i)
+                if (c != s(i)) {
+                  sA(i) = c
+                  val ns = String.valueOf(sA)
+                  if (bankSet.contains(ns) && !stepMap.contains(ns)) {
+                    if (ns == endGene) {
+                      breakStep = step + 1
+                      loop.break()
+                    }
+                    stepMap += (ns -> (step + 1))
+                    queue.enqueue(ns)
+                  }
                 }
-              }
-              // 还原
-              sA(i) = oldC
-            })
+                // 还原
+                sA(i) = oldC
+              })
+            }
+            size -= 1
           }
-          size -= 1
         }
       }
-      -1
+
+      breakStep
     }
 }
 
