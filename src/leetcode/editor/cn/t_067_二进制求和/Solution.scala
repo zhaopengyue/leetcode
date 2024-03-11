@@ -32,15 +32,26 @@ package leetcode.editor.cn.t_067_二进制求和
 object Solution {
     def addBinary(a: String, b: String): String = {
         // 结果集最大长度
-        val maxLen = math.max(a.length, b.length)
-        val ans = new Array[Char](maxLen + 1)
+        val arrLen = math.max(a.length, b.length)
+        val ans = new Array[Char](arrLen)
 
-        val sum = '0'
-        var startOffset = 0
+        var sum = 0
 
+        (1 to arrLen).foreach(i => {
+            ans(arrLen - i) = {
+                val ac = c2i(if (i <= a.length) a.charAt(a.length - i) else '0')
+                val bc = c2i(if (i <= b.length) b.charAt(b.length - i) else '0')
+                // 计算当前位置sum
+                val data = i2c(ac ^ bc ^ sum)
+                sum = if (ac + bc + sum > 1) 1 else 0
+                data
+            }
+        })
 
-
-        String.valueOf(ans, startOffset, ans.length - startOffset)
+        (if (sum == 1) "1" else "") + String.valueOf(ans)
     }
+
+    private def c2i(c: Char): Int = if (c == '0') 0 else 1
+    private def i2c(c: Int): Char = if (c == 0) '0' else '1'
 }
 //leetcode submit region end(Prohibit modification and deletion)
