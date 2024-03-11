@@ -5,4 +5,4 @@
 
 Java版本leetcode仓库：
 - gitee: 
-- github:
+- github: https://github.com/zhaopengyue/leetcode-java
